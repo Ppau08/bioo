@@ -6,70 +6,129 @@
   <title>Malla Bioquímica Interactiva</title>
   <style>
     body {
-      margin: 0;
-      font-family: sans-serif;
-      background-color: #111;
-      color: #fff;
-      display: flex;
-      flex-direction: row;
-      overflow-x: auto;
-    }
-    .anio {
-      flex: 0 0 16.6%;
-      padding: 1rem;
-      box-sizing: border-box;
-      border-right: 1px solid #444;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100vh;
-    }
-    .anio h2 {
+  font-family: serif;
+  background: url('LLL.png') no-repeat center center fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #1c0312;
+  margin: 0;
+  padding: 40px;
+}
+
+    h1 {
       text-align: center;
-      margin-bottom: 1rem;
+      margin-bottom: 40px;
     }
-    .cuatrimestre {
-      background-color: #222;
-      border-radius: 15px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      height: 45%;
-      overflow-y: auto;
-    }
-    .cuatrimestre.verde {
-      border: 2px solid green;
-    }
-    .cuatrimestre.rojo {
-      border: 2px solid red;
-    }
-    .materia {
-      background-color: gray;
+
+    .container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 40px;
+  max-width: 100%;
+  margin: auto;
+}
+
+    .year-column {
+      background-color: #E5C7D6;
       border-radius: 10px;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 220px;
+      margin: 0 10px;
+      flex-shrink: 0;
+    }
+
+    .year-column h2 {
       text-align: center;
-      font-size: 1rem;
+      color: #fff;
+      background-color: #821D59;
+      margin: 0;
+      padding: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-size: 18px;
+    }
+
+    .cuatrimestre {
+      border-top: 3px solid #F7EEED;
+      padding: 10px;
+    }
+
+    .cuatrimestre h3 {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 20px;
+}
+
+    .materia {
+      background-color: #FFFFFF;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      margin: 8px 0;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s;
     }
-    .materia.desbloqueada {
-      background-color: white;
-      color: black;
+
+    .espera {
+      background-color: #F4DCEA;
+      cursor: default;
+      pointer-events: none;
     }
-    .materia.regularizada {
-      background-color: lightgreen;
-      color: black;
+
+    .materia.estado-1 {
+      background-color: #E2EAC2;
     }
-    .materia.aprobada {
-      background-color: darkgreen;
-      color: white;
+
+    .materia.estado-2 {
+      background-color: #A7AF80;
       text-decoration: line-through;
+      color: #1c0312;
     }
   </style>
 </head>
 <body>
+  <h1>Malla Curricular - Bioquímica</h1>
+  <div class="container" id="malla">
+    <!-- Columnas por año con cuatrimestres -->
+    <div class="year-column" data-anio="1">
+      <h2>1º Año</h2>
+      <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <div class="cuatrimestre" data-cuatrimestre="2"></div>
+    </div>
+    <div class="year-column" data-anio="2">
+      <h2>2º Año</h2>
+      <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <div class="cuatrimestre" data-cuatrimestre="2"></div>
+    </div>
+    <div class="year-column" data-anio="3">
+      <h2>3º Año</h2>
+      <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <div class="cuatrimestre" data-cuatrimestre="2"></div>
+    </div>
+    <div class="year-column" data-anio="4">
+      <h2>4º Año</h2>
+      <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <div class="cuatrimestre" data-cuatrimestre="2"></div>
+    </div>
+    <div class="year-column" data-anio="5">
+      <h2>5º Año</h2>
+      <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <div class="cuatrimestre" data-cuatrimestre="2"></div>
+    </div>
+    <div class="year-column" data-anio="6">
+      <h2>6º Año</h2>
+      <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <div class="cuatrimestre" data-cuatrimestre="2"></div>
+    </div>    
+  </div>
+
   <script>
-    const malla = [
+   const materias = [
+     const malla = [
   {
     anio: 1,
     cuatrimestres: [
@@ -200,73 +259,60 @@
   }
 ];
 
-    const estadoMaterias = {};
+    const container = document.getElementById("malla");
 
-    function crearMalla() {
-      malla.forEach(anio => {
-        const col = document.createElement('div');
-        col.className = 'anio';
-        col.innerHTML = `<h2>${anio.anio}°</h2>`;
+    materias.forEach(m => {
+      const div = document.createElement("div");
+      div.classList.add("materia");
+      div.id = m.id;
+      div.textContent = m.nombre;
 
-        anio.cuatrimestres.forEach(cuat => {
-          const cuatDiv = document.createElement('div');
-          cuatDiv.className = `cuatrimestre ${cuat.color}`;
+      const target = document.querySelector(
+        `.year-column[data-anio='${m.anio}'] .cuatrimestre[data-cuatrimestre='${m.cuatri}']`
+      );
+      if (target) target.appendChild(div);
+    });
 
-          cuat.materias.forEach(mat => {
-            const matDiv = document.createElement('div');
-            matDiv.className = 'materia bloqueada';
-            matDiv.innerText = mat.nombre;
-            matDiv.dataset.id = mat.id;
-            matDiv.addEventListener('click', () => cambiarEstado(matDiv));
-            estadoMaterias[mat.id] = 'bloqueada';
-            cuatDiv.appendChild(matDiv);
-          });
+    function actualizarHabilitaciones() {
+      materias.forEach(m => {
+        const div = document.getElementById(m.id);
+        if (div.classList.contains("estado-2")) return;
 
-          col.appendChild(cuatDiv);
+        const requisitos = m.regulariza.concat(m.aprueba);
+        const todosCumplidos = requisitos.every(reqId => {
+          const req = document.getElementById(reqId);
+          return (
+            m.aprueba.includes(reqId)
+              ? req.classList.contains("estado-2")
+              : req.classList.contains("estado-1") || req.classList.contains("estado-2")
+          );
         });
 
-        document.body.appendChild(col);
-      });
-
-      actualizarEstados();
-    }
-
-    function cambiarEstado(div) {
-      const id = div.dataset.id;
-      let estado = estadoMaterias[id];
-
-      if (estado === 'bloqueada') return;
-      else if (estado === 'desbloqueada') estadoMaterias[id] = 'regularizada';
-      else if (estado === 'regularizada') estadoMaterias[id] = 'aprobada';
-      else estadoMaterias[id] = 'desbloqueada';
-
-      actualizarEstados();
-    }
-
-    function actualizarEstados() {
-      document.querySelectorAll('.materia').forEach(div => {
-        const id = div.dataset.id;
-        div.className = 'materia ' + estadoMaterias[id];
-      });
-
-      desbloquearMaterias();
-    }
-
-    function desbloquearMaterias() {
-      malla.forEach(anio => {
-        anio.cuatrimestres.forEach(cuat => {
-          cuat.materias.forEach(mat => {
-            if (estadoMaterias[mat.id] === 'bloqueada') {
-              const puede = mat.correlativas.every(c => estadoMaterias[c] === 'regularizada' || estadoMaterias[c] === 'aprobada');
-              if (puede) estadoMaterias[mat.id] = 'desbloqueada';
-            }
-          });
-        });
+        if (requisitos.length === 0 || todosCumplidos) {
+          div.classList.remove("espera");
+        } else {
+          div.classList.add("espera");
+        }
       });
     }
 
-    crearMalla();
+    document.querySelectorAll(".materia").forEach(m => {
+      m.addEventListener("click", () => {
+        if (m.classList.contains("espera")) return;
+
+        if (m.classList.contains("estado-2")) {
+          m.classList.remove("estado-2");
+        } else if (m.classList.contains("estado-1")) {
+          m.classList.remove("estado-1");
+          m.classList.add("estado-2");
+        } else {
+          m.classList.add("estado-1");
+        }
+        actualizarHabilitaciones();
+      });
+    });
+
+    actualizarHabilitaciones();
   </script>
 </body>
 </html>
-
