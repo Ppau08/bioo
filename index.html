@@ -6,227 +6,267 @@
   <title>Malla Bioquímica Interactiva</title>
   <style>
     body {
-  font-family: serif;
-  background: url('LLL.png') no-repeat center center fixed;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: #1c0312;
-  margin: 0;
-  padding: 40px;
-}
-
-    h1 {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .container {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 40px;
-  max-width: 100%;
-  margin: auto;
-}
-
-    .year-column {
-      background-color: #E5C7D6;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      width: 220px;
-      margin: 0 10px;
-      flex-shrink: 0;
-    }
-
-    .year-column h2 {
-      text-align: center;
-      color: #fff;
-      background-color: #821D59;
       margin: 0;
-      padding: 10px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      font-size: 18px;
+      font-family: sans-serif;
+      background-color: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
     }
-
-    .cuatrimestre {
-      border-top: 3px solid #F7EEED;
-      padding: 10px;
+    .anio {
+      flex: 0 0 16.6%;
+      padding: 1rem;
+      box-sizing: border-box;
+      border-right: 1px solid #444;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100vh;
     }
-
-    .cuatrimestre h3 {
-  text-align: center;
-  margin: 10px 0;
-  font-size: 20px;
-}
-
-    .materia {
-      background-color: #FFFFFF;
-      border: 2px solid #fff;
-      border-radius: 8px;
-      margin: 8px 0;
-      padding: 10px;
+    .anio h2 {
       text-align: center;
-      font-size: 14px;
+      margin-bottom: 1rem;
+    }
+    .cuatrimestre {
+      background-color: #222;
+      border-radius: 15px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      height: 45%;
+      overflow-y: auto;
+    }
+    .cuatrimestre.verde {
+      border: 2px solid green;
+    }
+    .cuatrimestre.rojo {
+      border: 2px solid red;
+    }
+    .materia {
+      background-color: gray;
+      border-radius: 10px;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      text-align: center;
+      font-size: 1rem;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: 0.3s;
     }
-
-    .espera {
-      background-color: #F4DCEA;
-      cursor: default;
-      pointer-events: none;
+    .materia.desbloqueada {
+      background-color: white;
+      color: black;
     }
-
-    .materia.estado-1 {
-      background-color: #E2EAC2;
+    .materia.regularizada {
+      background-color: lightgreen;
+      color: black;
     }
-
-    .materia.estado-2 {
-      background-color: #A7AF80;
+    .materia.aprobada {
+      background-color: darkgreen;
+      color: white;
       text-decoration: line-through;
-      color: #1c0312;
     }
   </style>
 </head>
 <body>
-  <h1>Malla Curricular - Bioquímica</h1>
-  <div class="container" id="malla">
-    <!-- Columnas por año con cuatrimestres -->
-    <div class="year-column" data-anio="1">
-      <h2>1º Año</h2>
-      <div class="cuatrimestre" data-cuatrimestre="1"></div>
-      <div class="cuatrimestre" data-cuatrimestre="2"></div>
-    </div>
-    <div class="year-column" data-anio="2">
-      <h2>2º Año</h2>
-      <div class="cuatrimestre" data-cuatrimestre="1"></div>
-      <div class="cuatrimestre" data-cuatrimestre="2"></div>
-    </div>
-    <div class="year-column" data-anio="3">
-      <h2>3º Año</h2>
-      <div class="cuatrimestre" data-cuatrimestre="1"></div>
-      <div class="cuatrimestre" data-cuatrimestre="2"></div>
-    </div>
-    <div class="year-column" data-anio="4">
-      <h2>4º Año</h2>
-      <div class="cuatrimestre" data-cuatrimestre="1"></div>
-      <div class="cuatrimestre" data-cuatrimestre="2"></div>
-    </div>
-    <div class="year-column" data-anio="5">
-      <h2>5º Año</h2>
-      <div class="cuatrimestre" data-cuatrimestre="1"></div>
-      <div class="cuatrimestre" data-cuatrimestre="2"></div>
-    </div>
-    <div class="year-column" data-anio="6">
-      <h2>6º Año</h2>
-      <div class="cuatrimestre" data-cuatrimestre="1"></div>
-      <div class="cuatrimestre" data-cuatrimestre="2"></div>
-    </div>    
-  </div>
-
   <script>
-   const materias = [
-      // Años 1 y 2 (ya presentes)
-      { id: "algebra", nombre: "Álgebra y Geometría Analítica", regulariza: [], aprueba: [], anio: 1, cuatri: 1 },
-      { id: "quimica_general", nombre: "Química General", regulariza: [], aprueba: [], anio: 1, cuatri: 1 },
-      { id: "calculo", nombre: "Cálculo Diferencial e Integral", regulariza: ["algebra"], aprueba: [], anio: 1, cuatri: 2 },
-      { id: "quimica_inorganica", nombre: "Química Inorgánica", regulariza: ["quimica_general"], aprueba: [], anio: 1, cuatri: 2 },
-      { id: "biologia", nombre: "Biología General y Celular", regulariza: ["quimica_general"], aprueba: [], anio: 1, cuatri: 2 },
-      { id: "mecanica", nombre: "Mecánica, Calor y Termodinámica", regulariza: ["quimica_inorganica", "calculo"], aprueba: ["algebra", "quimica_general"], anio: 2, cuatri: 1 },
-      { id: "organica1", nombre: "Química Orgánica I", regulariza: ["quimica_inorganica"], aprueba: ["algebra", "quimica_general"], anio: 2, cuatri: 1 },
-      { id: "morfologia", nombre: "Morfología", regulariza: ["biologia"], aprueba: [], anio: 2, cuatri: 1 },
-      { id: "electricidad", nombre: "Electricidad, Magnetismo, Óptica y Sonido", regulariza: ["mecanica"], aprueba: ["algebra"], anio: 2, cuatri: 2 },
-      { id: "organica2", nombre: "Química Orgánica II", regulariza: ["organica1"], aprueba: ["quimica_inorganica"], anio: 2, cuatri: 2 },
-      { id: "analitica", nombre: "Química Analítica", regulariza: ["calculo"], aprueba: ["algebra", "quimica_inorganica"], anio: 2, cuatri: 2 },
-      { id: "traduccion", nombre: "Prueba de Traducción", regulariza: [], aprueba: ["algebra", "quimica_general", "calculo", "quimica_inorganica", "biologia"], anio: 2, cuatri: 2 },
-      // Año 3
-      { id: "biologica1", nombre: "Química Biológica I", regulariza: ["mecanica", "analitica", "organica2"], aprueba: ["organica1", "traduccion"], anio: 3, cuatri: 1 },
-      { id: "fisica_bio", nombre: "Química Física Biológica", regulariza: ["analitica", "organica2"], aprueba: ["mecanica","traduccion"], anio: 3, cuatri: 1 },
-      { id: "bioestadistica", nombre: "Bioestadística", regulariza: ["analitica"], aprueba: ["calculo", "traduccion"], anio: 3, cuatri: 1 },
-      { id: "biologica2", nombre: "Química Biológica II", regulariza: ["biologica1", "fisica_bio", "organica2"], aprueba: ["traduccion"], anio: 3, cuatri: 2 },
-      { id: "genetica", nombre: "Genética y Biología Molecular", regulariza: ["biologica1", "organica2"], aprueba: ["traduccion"], anio: 3, cuatri: 2 },
-      { id: "instrumental", nombre: "Química Analítica Instrumental", regulariza: ["bioestadistica", "fisica_bio", "organica2"], aprueba: ["analitica", "traduccion"], anio: 3, cuatri: 2 },
-      { id: "software", nombre: "Prueba de Manejo de Software", regulariza: [], aprueba: ["traduccion"], anio: 3, cuatri: 2 },
+    const malla = [
+  {
+    anio: 1,
+    cuatrimestres: [
+      {
+        color: 'verde',
+        materias: [
+          { nombre: 'Álgebra y Geometría Analítica', id: 'algebra', correlativas: [] },
+          { nombre: 'Química General', id: 'quim_gen', correlativas: [] },
+        ]
+      },
+      {
+        color: 'rojo',
+        materias: [
+          { nombre: 'Cálculo Diferencial e Integral', id: 'calculo', correlativas: ['algebra'] },
+          { nombre: 'Química Inorgánica', id: 'quim_inorg', correlativas: ['quim_gen'] },
+          { nombre: 'Biología General y Celular', id: 'biologia', correlativas: ['quim_gen'] },
+        ]
+      }
+    ]
+  },
+  {
+    anio: 2,
+    cuatrimestres: [
+      {
+        color: 'verde',
+        materias: [
+          { nombre: 'Mecánica, Calor y Termodinámica', id: 'mecanica', correlativas: ['quim_inorg', 'calculo'] },
+          { nombre: 'Química Orgánica I', id: 'organica1', correlativas: ['quim_inorg'] },
+          { nombre: 'Morfología', id: 'morfologia', correlativas: ['biologia'] }
+        ]
+      },
+      {
+        color: 'rojo',
+        materias: [
+          { nombre: 'Electricidad, Magnetismo, Óptica y Sonido', id: 'electricidad', correlativas: ['mecanica'] },
+          { nombre: 'Química Orgánica II', id: 'organica2', correlativas: ['organica1'] },
+          { nombre: 'Química Analítica', id: 'analitica', correlativas: ['calculo'] },
+          { nombre: 'Prueba de Traducción', id: 'traduccion', correlativas: [] }
+        ]
+      }
+    ]
+  },
+  {
+    anio: 3,
+    cuatrimestres: [
+      {
+        color: 'verde',
+        materias: [
+          { nombre: 'Química Biológica I', id: 'biologica1', correlativas: ['mecanica', 'analitica', 'organica2'] },
+          { nombre: 'Química Física Biológica', id: 'fisica_bio', correlativas: ['analitica', 'organica2'] },
+          { nombre: 'Bioestadística', id: 'bioestadistica', correlativas: ['analitica'] }
+        ]
+      },
+      {
+        color: 'rojo',
+        materias: [
+          { nombre: 'Química Biológica II', id: 'biologica2', correlativas: ['biologica1', 'fisica_bio', 'organica2'] },
+          { nombre: 'Genética y Biología Molecular', id: 'genetica', correlativas: ['biologica1', 'organica2'] },
+          { nombre: 'Química Analítica Instrumental', id: 'instrumental', correlativas: ['bioestadistica', 'fisica_bio', 'organica2'] },
+          { nombre: 'Prueba de Manejo de Software', id: 'software', correlativas: [] }
+        ]
+      }
+    ]
+  },
+  {
+    anio: 4,
+    cuatrimestres: [
+      {
+        color: 'verde',
+        materias: [
+          { nombre: 'Virología Clínica', id: 'virologia', correlativas: ['genetica', 'biologica2', 'bioestadistica'] },
+          { nombre: 'Microbiología General', id: 'microbiologia', correlativas: ['genetica', 'biologica1', 'biologica2'] },
+          { nombre: 'Fisiología Humana', id: 'fisiologia', correlativas: ['biologica2', 'morfologia'] },
+          { nombre: 'Farmacología', id: 'farmacologia', correlativas: ['biologica2', 'organica2'] }
+        ]
+      },
+      {
+        color: 'rojo',
+        materias: [
+          { nombre: 'Bromatología y Nutrición', id: 'bromatologia', correlativas: ['microbiologia', 'instrumental'] },
+          { nombre: 'Fisiopatología', id: 'fisiopatologia', correlativas: ['fisiologia', 'microbiologia', 'fisica_bio', 'biologica2'] },
+          { nombre: 'Inmunología Clínica', id: 'inmunologia', correlativas: ['microbiologia', 'fisiologia', 'bioestadistica', 'genetica'] },
+          { nombre: 'Parasitología Humana', id: 'parasitologia', correlativas: ['microbiologia', 'fisiologia', 'bioestadistica', 'genetica'] }
+        ]
+      }
+    ]
+  },
+  {
+    anio: 5,
+    cuatrimestres: [
+      {
+        color: 'verde',
+        materias: [
+          { nombre: 'Bacteriología y Micología Clínica', id: 'bacteriologia', correlativas: ['fisiopatologia', 'inmunologia'] },
+          { nombre: 'Química Clínica', id: 'quimica_clinica', correlativas: ['fisiopatologia'] },
+          { nombre: 'Toxicología y Química Legal', id: 'toxicologia', correlativas: ['fisiopatologia'] },
+          { nombre: 'Ética Profesional', id: 'etica', correlativas: [] }
+        ]
+      },
+      {
+        color: 'rojo',
+        materias: [
+          { nombre: 'Hematología Clínica', id: 'hematologia', correlativas: ['bioestadistica', 'fisiopatologia', 'inmunologia'] },
+          { nombre: 'Endocrinología y Monitoreo de Drogas', id: 'endocrinologia', correlativas: ['fisiopatologia', 'inmunologia'] },
+          { nombre: 'Optativa I', id: 'optativa1', correlativas: [] },
+          { nombre: 'Gestión de Laboratorio', id: 'gestion', correlativas: ['quimica_clinica'] },
+          { nombre: 'Epistemología e Investigación', id: 'epistemologia', correlativas: ['toxicologia', 'bromatologia'] }
+        ]
+      }
+    ]
+  },
+  {
+    anio: 6,
+    cuatrimestres: [
+      {
+        color: 'verde',
+        materias: [
+          { nombre: 'Práctica Hospitalaria', id: 'hospitalaria', correlativas: ['hematologia', 'bacteriologia', 'endocrinologia', 'gestion', 'virologia', 'inmunologia', 'parasitologia', 'quimica_clinica'] }
+        ]
+      },
+      {
+        color: 'rojo',
+        materias: [
+          { nombre: 'Práctica Optativa', id: 'optativa2', correlativas: ['hospitalaria'] }
+        ]
+      }
+    ]
+  }
+];
 
-      { id: "virologia", nombre: "Virología Clínica", regulariza: ["genetica", "biologica2", "bioestadistica"], aprueba: [], anio: 4, cuatri: 1 },
-    { id: "microbiologia", nombre: "Microbiología General", regulariza: ["genetica", "biologica1", "biologica2"], aprueba: [], anio: 4, cuatri: 1 },
-    { id: "fisiologia", nombre: "Fisiología Humana", regulariza: ["biologica2", "morfologia"], aprueba: [], anio: 4, cuatri: 1 },
-    { id: "farmacologia", nombre: "Farmacología", regulariza: ["biologica2", "organica2"], aprueba: [], anio: 4, cuatri: 1 },
-    { id: "bromatologia", nombre: "Bromatología y Nutrición", regulariza: ["microbiologia", "instrumental"], aprueba: ["biologica1"], anio: 4, cuatri: 2 },
-    { id: "fisiopatologia", nombre: "Fisiopatología", regulariza: ["fisiologia", "microbiologia", "fisica_bio", "biologica2"], aprueba: [], anio: 4, cuatri: 2 },
-    { id: "inmunologia", nombre: "Inmunología Clínica", regulariza: ["microbiologia", "fisiologia", "bioestadistica", "genetica"], aprueba: [], anio: 4, cuatri: 2 },
-    { id: "parasitologia", nombre: "Parasitología Humana", regulariza: ["microbiologia", "fisiologia", "bioestadistica", "genetica"], aprueba: [], anio: 4, cuatri: 2 },
+    const estadoMaterias = {};
 
-    { id: "bacteriologia", nombre: "Bacteriología y Micología Clínica", regulariza: ["fisiopatologia", "inmunologia"], aprueba: ["microbiologia", "genetica"], anio: 5, cuatri: 1 },
-    { id: "quimica_clinica", nombre: "Química Clínica", regulariza: ["fisiopatologia"], aprueba: ["fisiologia", "bioestadistica", "biologica2", "genetica", "instrumental"], anio: 5, cuatri: 1 },
-    { id: "toxicologia", nombre: "Toxicología y Química Legal", regulariza: ["fisiopatologia"], aprueba: ["organica2", "instrumental", "farmacologia"], anio: 5, cuatri: 1 },
-    { id: "etica", nombre: "Ética Profesional", regulariza: [], aprueba: [], anio: 5, cuatri: 1 },
-    { id: "hematologia", nombre: "Hematología Clínica", regulariza: ["bioestadistica", "fisiopatologia", "inmunologia"], aprueba: ["genetica"], anio: 5, cuatri: 2 },
-    { id: "endocrinologia", nombre: "Endocrinología y Monitoreo de Drogas", regulariza: ["fisiopatologia", "inmunologia"], aprueba: ["instrumental", "farmacologia", "genetica"], anio: 5, cuatri: 2 },
-    { id: "optativa1", nombre: "Optativa I", regulariza: [], aprueba: [], anio: 5, cuatri: 2 },
-    { id: "gestion", nombre: "Gestión de Laboratorio", regulariza: ["quimica_clinica"], aprueba: ["bioestadistica", "instrumental"], anio: 5, cuatri: 2 },
-    { id: "epistemologia", nombre: "Epistemología e Investigación", regulariza: ["toxicologia", "bromatologia"], aprueba: ["fisiopatologia"], anio: 5, cuatri: 2 },
+    function crearMalla() {
+      malla.forEach(anio => {
+        const col = document.createElement('div');
+        col.className = 'anio';
+        col.innerHTML = `<h2>${anio.anio}°</h2>`;
 
-    { id: "hospitalaria", nombre: "Práctica Hospitalaria", regulariza: ["hematologia", "bacteriologia", "endocrinologia", "gestion", "virologia", "inmunologia", "parasitologia", "quimica_clinica"], aprueba: [], anio: 6, cuatri: 1 },
-    { id: "optativa2", nombre: "Práctica Optativa", regulariza: ["hospitalaria"], aprueba: ["hospitalaria"], anio: 6, cuatri: 2 }
-    ];
+        anio.cuatrimestres.forEach(cuat => {
+          const cuatDiv = document.createElement('div');
+          cuatDiv.className = `cuatrimestre ${cuat.color}`;
 
-    const container = document.getElementById("malla");
+          cuat.materias.forEach(mat => {
+            const matDiv = document.createElement('div');
+            matDiv.className = 'materia bloqueada';
+            matDiv.innerText = mat.nombre;
+            matDiv.dataset.id = mat.id;
+            matDiv.addEventListener('click', () => cambiarEstado(matDiv));
+            estadoMaterias[mat.id] = 'bloqueada';
+            cuatDiv.appendChild(matDiv);
+          });
 
-    materias.forEach(m => {
-      const div = document.createElement("div");
-      div.classList.add("materia");
-      div.id = m.id;
-      div.textContent = m.nombre;
-
-      const target = document.querySelector(
-        `.year-column[data-anio='${m.anio}'] .cuatrimestre[data-cuatrimestre='${m.cuatri}']`
-      );
-      if (target) target.appendChild(div);
-    });
-
-    function actualizarHabilitaciones() {
-      materias.forEach(m => {
-        const div = document.getElementById(m.id);
-        if (div.classList.contains("estado-2")) return;
-
-        const requisitos = m.regulariza.concat(m.aprueba);
-        const todosCumplidos = requisitos.every(reqId => {
-          const req = document.getElementById(reqId);
-          return (
-            m.aprueba.includes(reqId)
-              ? req.classList.contains("estado-2")
-              : req.classList.contains("estado-1") || req.classList.contains("estado-2")
-          );
+          col.appendChild(cuatDiv);
         });
 
-        if (requisitos.length === 0 || todosCumplidos) {
-          div.classList.remove("espera");
-        } else {
-          div.classList.add("espera");
-        }
+        document.body.appendChild(col);
+      });
+
+      actualizarEstados();
+    }
+
+    function cambiarEstado(div) {
+      const id = div.dataset.id;
+      let estado = estadoMaterias[id];
+
+      if (estado === 'bloqueada') return;
+      else if (estado === 'desbloqueada') estadoMaterias[id] = 'regularizada';
+      else if (estado === 'regularizada') estadoMaterias[id] = 'aprobada';
+      else estadoMaterias[id] = 'desbloqueada';
+
+      actualizarEstados();
+    }
+
+    function actualizarEstados() {
+      document.querySelectorAll('.materia').forEach(div => {
+        const id = div.dataset.id;
+        div.className = 'materia ' + estadoMaterias[id];
+      });
+
+      desbloquearMaterias();
+    }
+
+    function desbloquearMaterias() {
+      malla.forEach(anio => {
+        anio.cuatrimestres.forEach(cuat => {
+          cuat.materias.forEach(mat => {
+            if (estadoMaterias[mat.id] === 'bloqueada') {
+              const puede = mat.correlativas.every(c => estadoMaterias[c] === 'regularizada' || estadoMaterias[c] === 'aprobada');
+              if (puede) estadoMaterias[mat.id] = 'desbloqueada';
+            }
+          });
+        });
       });
     }
 
-    document.querySelectorAll(".materia").forEach(m => {
-      m.addEventListener("click", () => {
-        if (m.classList.contains("espera")) return;
-
-        if (m.classList.contains("estado-2")) {
-          m.classList.remove("estado-2");
-        } else if (m.classList.contains("estado-1")) {
-          m.classList.remove("estado-1");
-          m.classList.add("estado-2");
-        } else {
-          m.classList.add("estado-1");
-        }
-        actualizarHabilitaciones();
-      });
-    });
-
-    actualizarHabilitaciones();
+    crearMalla();
   </script>
 </body>
 </html>
+
