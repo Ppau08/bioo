@@ -246,23 +246,70 @@
 
     actualizarHabilitaciones();
  <script type="module">
-  // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyCHebE8dyfWeG54scQinhS_Sn2kg73GctU",
     authDomain: "malla-interactiva-bioqui.firebaseapp.com",
     projectId: "malla-interactiva-bioqui",
-    storageBucket: "malla-interactiva-bioqui.firebasestorage.app",
+    storageBucket: "malla-interactiva-bioqui.appspot.com",
     messagingSenderId: "927818756347",
     appId: "1:927818756347:web:33470cba743179fc97c05e"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // ID fijo (podés reemplazar por autenticación si querés un progreso por persona)
+  const docRef = doc(db, "usuarios", "progreso_estudiante");
+
+  // GUARDAR PROGRESO
+  async function guardarProgreso() {
+    const estadoMaterias = {};
+    document.querySelectorAll(".materia").forEach(m => {
+      if (m.classList.contains("estado-2")) {
+        estadoMaterias[m.id] = 2;
+      } else if (m.classList.contains("estado-1")) {
+        estadoMaterias[m.id] = 1;
+      } else {
+        estadoMaterias[m.id] = 0;
+      }
+    });
+
+    await setDoc(docRef, estadoMaterias);
+    alert("Progreso guardado.");
+  }
+
+  // CARGAR PROGRESO
+  async function cargarProgreso() {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const datos = docSnap.data();
+      Object.entries(datos).forEach(([id, estado]) => {
+        const m = document.getElementById(id);
+        if (!m) return;
+        m.classList.remove("estado-1", "estado-2");
+        if (estado === 1) m.classList.add("estado-1");
+        else if (estado === 2) m.classList.add("estado-2");
+      });
+    }
+    actualizarHabilitaciones();
+  }
+
+  // BOTONES
+  document.body.insertAdjacentHTML("beforeend", `
+    <div style="text-align:center; margin-top:20px;">
+      <button id="guardar">Guardar Progreso</button>
+      <button id="cargar">Cargar Progreso</button>
+    </div>
+  `);
+
+  document.getElementById("guardar").addEventListener("click", guardarProgreso);
+  document.getElementById("cargar").addEventListener("click", cargarProgreso);
+
+  // Auto-carga al inicio
+  cargarProgreso();
 </script>
 </body>
 </html>
