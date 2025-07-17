@@ -12,79 +12,81 @@
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  color: #1c0312; /* opcional: mejora el contraste del texto si el fondo es oscuro */
+  color: #1c0312;
+  padding: 0 40px; /* MÁS MARGEN EN LOS COSTADOS */
 }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 40px;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
 
-    .container {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      justify-content: center;
-    }
+.container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  justify-content: flex-start; /* alineado desde la izquierda */
+  gap: 20px; /* más separación entre columnas */
+}
 
-    .year-column {
-      background-color: #E5C7D6;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      width: 220px;
-      margin: 0 10px;
-      flex-shrink: 0;
-    }
+.year-column {
+  background-color: #E5C7D6;
+  border-radius: 20px; /* MÁS REDONDEADO */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  width: 260px; /* MÁS ANCHO */
+  flex-shrink: 0;
+  padding-bottom: 10px;
+}
 
-    .year-column h2 {
-      text-align: center;
-      color: #fff;
-      background-color: #821D59;
-      margin: 0;
-      padding: 10px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      font-size: 18px;
-    }
+.year-column h2 {
+  text-align: center;
+  color: #fff;
+  background-color: #821D59;
+  margin: 0;
+  padding: 12px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  font-size: 20px;
+}
 
-    .cuatrimestre {
-      border-top: 3px solid #F7EEED;
-      padding: 10px;
-    }
+.cuatrimestre {
+  border-top: 3px solid #F7EEED;
+  padding: 15px 10px;
+}
 
-    .cuatrimestre h3 {
-      text-align: center;
-      margin: 10px 0;
-      font-size: 16px;
-    }
+.cuatrimestre h3 {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 16px;
+}
 
-    .materia {
-      background-color: #FFFFFF;
-      border: 2px solid #fff;
-      border-radius: 8px;
-      margin: 8px 0;
-      padding: 10px;
-      text-align: center;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
+.materia {
+  background-color: #FFFFFF;
+  border: 2px solid #fff;
+  border-radius: 12px; /* MÁS REDONDEADO */
+  margin: 10px 0;
+  padding: 12px;
+  text-align: center;
+  font-size: 15px; /* MÁS GRANDE */
+  cursor: pointer;
+  transition: all 0.3s;
+}
 
-    .espera {
-      background-color: #F4DCEA;
-      cursor: default;
-      pointer-events: none;
-    }
+.espera {
+  background-color: #F4DCEA;
+  cursor: default;
+  pointer-events: none;
+}
 
-    .materia.estado-1 {
-      background-color: #E2EAC2;
-    }
+.materia.estado-1 {
+  background-color: #E2EAC2;
+}
 
-    .materia.estado-2 {
-      background-color: #A7AF80;
-      text-decoration: line-through;
-      color: #1c0312;
-    }
+.materia.estado-2 {
+  background-color: #A7AF80;
+  text-decoration: line-through;
+  color: #1c0312;
+}
   </style>
 </head>
 <body>
