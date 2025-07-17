@@ -5,100 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Malla Bioquímica Interactiva</title>
   <style>
-    body *:not(h1) {
-  font-size: 25px;
+    body {
   font-family: serif;
   background: url('LLL.png') no-repeat center center fixed;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  color: #1c0312;
-  padding: 0 40px;
+  color: #1c0312; /* opcional: mejora el contraste del texto si el fondo es oscuro */
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 40px;
-}
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
 
-.container {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  justify-content: flex-start;
-  gap: 20px;
-}
+    .container {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      justify-content: center;
+    }
 
-.year-column {
-  background-color: transparent; /* Eliminamos el fondo rosado */
-  border-radius: 0;
-  box-shadow: none;
-  width: 260px;
-  flex-shrink: 0;
-  padding-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-    
-.year-column h2 {
-  text-align: center;
-  color: #fff;
-  background-color: #821D59;
-  margin: 0;
-  padding: 14px;
-  border-radius: 20px; /* MÁS REDONDEADO */
-  font-size: 20px;
-}
+    .year-column {
+      background-color: #E5C7D6;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 220px;
+      margin: 0 10px;
+      flex-shrink: 0;
+    }
 
-/* Cada cuatrimestre tiene altura fija para alinear la línea divisoria */
-.cuatrimestre {
-  padding: 10px;
-  min-height: 300px; /* altura fija para alinear los separadores */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background: none; /* sin fondo */
-  border: none;
-}
+    .year-column h2 {
+      text-align: center;
+      color: #fff;
+      background-color: #821D59;
+      margin: 0;
+      padding: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-size: 18px;
+    }
 
-/* Línea divisoria entre cuatrimestres */
-.year-column .cuatrimestre:first-of-type {
-  border-bottom: 3px solid #ffffffaa; /* línea clara divisoria */
-}
+    .cuatrimestre {
+      border-top: 3px solid #F7EEED;
+      padding: 10px;
+    }
 
-.cuatrimestre h3 {
-  display: none; /* ocultar los títulos si no querés mostrar "1er cuatri", etc */
-}
+    .cuatrimestre h3 {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 16px;
+    }
 
-.materia {
-  background-color: #FFFFFF;
-  border: 2px solid #fff;
-  border-radius: 12px;
-  margin: 10px 0;
-  padding: 12px;
-  text-align: center;
-  font-size: 15px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
+    .materia {
+      background-color: #FFFFFF;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      margin: 8px 0;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
 
-.espera {
-  background-color: #F4DCEA;
-  cursor: default;
-  pointer-events: none;
-}
+    .espera {
+      background-color: #F4DCEA;
+      cursor: default;
+      pointer-events: none;
+    }
 
-.materia.estado-1 {
-  background-color: #E2EAC2;
-}
+    .materia.estado-1 {
+      background-color: #E2EAC2;
+    }
 
-.materia.estado-2 {
-  background-color: #A7AF80;
-  text-decoration: line-through;
-  color: #1c0312;
-}
+    .materia.estado-2 {
+      background-color: #A7AF80;
+      text-decoration: line-through;
+      color: #1c0312;
+    }
   </style>
 </head>
 <body>
