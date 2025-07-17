@@ -47,13 +47,7 @@
       border-top-right-radius: 10px;
       font-size: 18px;
     }
-  .year-column::half {
-  content: "";
-  display: block;
-  height: 4px;
-  background-color: #fff;
-  margin: 10px 0;
-}
+ 
     .cuatrimestre {
   padding: 10px;
   min-height: 280px; /* altura fija para alinear */
@@ -93,6 +87,12 @@
       text-decoration: line-through;
       color: #1c0312;
     }
+.divisor-cuatrimestre {
+  height: 3px;
+  background-color: #821D59;
+  margin: 10px 0;
+  border-radius: 2px;
+}
 
   </style>
 </head>
@@ -103,31 +103,43 @@
     <div class="year-column" data-anio="1">
       <h2>1º Año</h2>
       <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <!-- LÍNEA DIVISORIA ENTRE CUATRIMESTRES -->
+  <div class="divisor-cuatrimestre"></div>
       <div class="cuatrimestre" data-cuatrimestre="2"></div>
     </div>
     <div class="year-column" data-anio="2">
       <h2>2º Año</h2>
       <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <!-- LÍNEA DIVISORIA ENTRE CUATRIMESTRES -->
+  <div class="divisor-cuatrimestre"></div>
       <div class="cuatrimestre" data-cuatrimestre="2"></div>
     </div>
     <div class="year-column" data-anio="3">
       <h2>3º Año</h2>
       <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <!-- LÍNEA DIVISORIA ENTRE CUATRIMESTRES -->
+  <div class="divisor-cuatrimestre"></div>
       <div class="cuatrimestre" data-cuatrimestre="2"></div>
     </div>
     <div class="year-column" data-anio="4">
       <h2>4º Año</h2>
       <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <!-- LÍNEA DIVISORIA ENTRE CUATRIMESTRES -->
+  <div class="divisor-cuatrimestre"></div>
       <div class="cuatrimestre" data-cuatrimestre="2"></div>
     </div>
     <div class="year-column" data-anio="5">
       <h2>5º Año</h2>
       <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <!-- LÍNEA DIVISORIA ENTRE CUATRIMESTRES -->
+  <div class="divisor-cuatrimestre"></div>
       <div class="cuatrimestre" data-cuatrimestre="2"></div>
     </div>
     <div class="year-column" data-anio="6">
       <h2>6º Año</h2>
       <div class="cuatrimestre" data-cuatrimestre="1"></div>
+      <!-- LÍNEA DIVISORIA ENTRE CUATRIMESTRES -->
+  <div class="divisor-cuatrimestre"></div>
       <div class="cuatrimestre" data-cuatrimestre="2"></div>
     </div>    
   </div>
