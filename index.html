@@ -28,13 +28,14 @@
     }
 
     .year-column {
-      background-color: #E5C7D6;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      width: 220px;
-      margin: 0 10px;
-      flex-shrink: 0;
-    }
+  width: 220px;
+  margin: 0 10px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
 
     .year-column h2 {
       text-align: center;
@@ -48,9 +49,10 @@
     }
 
     .cuatrimestre {
-      border-top: 3px solid #F7EEED;
-      padding: 10px;
-    }
+  padding: 10px;
+  min-height: 280px; /* altura fija para alinear */
+  position: relative;
+}
 
     .cuatrimestre h3 {
       text-align: center;
@@ -85,6 +87,14 @@
       text-decoration: line-through;
       color: #1c0312;
     }
+    .year-column::after {
+  content: "";
+  display: block;
+  height: 2px;
+  background-color: #821D59;
+  margin: 10px 0;
+}
+
   </style>
 </head>
 <body>
