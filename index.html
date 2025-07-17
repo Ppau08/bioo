@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Malla Bioquímica Interactiva</title>
+  <script type="module" src="firebase-config.js"></script>
   <style>
     body {
       font-family: serif;
@@ -15,21 +16,23 @@
     h1 {
       text-align: center;
       margin-bottom: 40px;
+      font-size: 22px;
     }
 
     .container {
       display: flex;
-      overflow-x: auto;
       justify-content: center;
+      overflow-x: auto;
     }
 
     .year-column {
-      width: 220px;
+      width: 240px;
       margin: 0 10px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       align-items: stretch;
+      font-size: 16px;
     }
 
     .year-column h2 {
@@ -38,39 +41,29 @@
       background-color: #821D59;
       margin: 0;
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 15px;
       font-size: 20px;
     }
 
-    .cuatrimestre {
-      padding: 10px;
-      min-height: 240px;
-      position: relative;
+    .divider {
+      height: 2px;
+      background-color: #000;
+      margin: 20px 0;
     }
 
-    .divisor-cuatrimestre {
-      height: 3px;
-      background-color: #821D59;
-      margin: 10px 0;
-      border-radius: 2px;
+    .cuatrimestre {
+      min-height: 280px;
     }
 
     .materia {
       background-color: #FFFFFF;
       border: 2px solid #fff;
       border-radius: 8px;
-      margin: 6px 0;
+      margin: 8px 0;
       padding: 10px;
       text-align: center;
-      font-size: 16px;
       cursor: pointer;
       transition: all 0.3s;
-    }
-
-    .espera {
-      background-color: #F4DCEA;
-      cursor: default;
-      pointer-events: none;
     }
 
     .materia.estado-1 {
@@ -80,38 +73,37 @@
     .materia.estado-2 {
       background-color: #A7AF80;
       text-decoration: line-through;
+      color: #1c0312;
     }
 
-    .buttons {
+    .botones {
       text-align: center;
-      margin-top: 30px;
+      margin: 20px;
     }
 
-    .buttons button {
-      font-size: 16px;
-      margin: 0 10px;
-      padding: 8px 16px;
+    button {
+      padding: 10px 15px;
+      margin: 5px;
       border-radius: 8px;
+      border: none;
       background-color: #821D59;
       color: white;
-      border: none;
+      font-size: 16px;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>Malla Bioquímica Interactiva</h1>
-
+  <h1>Malla Bioquímica - Plan 2009</h1>
+  <div class="botones">
+    <button onclick="guardarProgreso()">Guardar Progreso</button>
+    <button onclick="cargarProgreso()">Cargar Progreso</button>
+  </div>
   <div class="container" id="malla"></div>
 
-  <div class="buttons">
-    <button id="guardar">Guardar Progreso</button>
-    <button id="cargar">Cargar Progreso</button>
-  </div>
-
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCHebE8dyfWeG54scQinhS_Sn2kg73GctU",
@@ -124,108 +116,86 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const docRef = doc(db, "usuarios", "progreso_estudiante");
 
-    const malla = {
-      "1er Año": [
-        ["Álgebra y Geometría Analítica", "Biología General y Celular", "Química General"],
-        ["Cálculo", "Física (Mecánica, Calor y Termodinámica)", "Química Inorgánica"]
+    const materias = [
+      [
+        ["Álgebra y Geometría Analítica", "Química General"],
+        ["Cálculo Diferencial e Integral", "Química Inorgánica", "Biología General y Celular"]
       ],
-      "2do Año": [
-        ["Química Orgánica", "Química Biológica", "Estadística"],
-        ["Fisicoquímica", "Biología Molecular y Celular", "Microbiología"]
+      [
+        ["Mecánica, Calor y Termodinámica", "Química Orgánica I", "Morfología"],
+        ["Electricidad, Magnetismo, Óptica y Sonido", "Química Orgánica II", "Química Analítica"]
       ],
-      "3er Año": [
-        ["Fisiología", "Química Analítica", "Patología"],
-        ["Farmacología", "Toxicología", "Inmunología"]
+      [
+        ["Química Biológica I", "Química Física Biológica", "Bioestadística"],
+        ["Química Biológica II", "Genética y Biología Molecular", "Química Analítica Instrumental"]
       ],
-      "4to Año": [
-        ["Bioquímica Clínica I", "Hematología", "Virología"],
-        ["Bioquímica Clínica II", "Prácticas de Laboratorio", "Parasitología"]
+      [
+        ["Virología Clínica", "Microbiología General", "Fisiología Humana", "Farmacología"],
+        ["Bromatología y Nutrición", "Fisiopatología", "Inmunología Clínica", "Parasitología Humana"]
       ],
-      "5to Año": [
-        ["Trabajo Final", "Legislación Bioquímica", "Gestíon de Calidad"]
+      [
+        ["Bacteriología y Micología Clínica", "Química Clínica", "Toxicología y Química Legal", "Ética Profesional"],
+        ["Endocrinología y Monitoreo de Drogas Terapéuticas", "Optativa I", "Gestión de Laboratorio", "Epistemología e Investigación"]
+      ],
+      [
+        ["Práctica Hospitalaria"],
+        ["Práctica Optativa"]
       ]
-    };
+    ];
 
-    const contenedor = document.getElementById("malla");
+    const mallaDiv = document.getElementById("malla");
 
-    for (const [anio, cuatris] of Object.entries(malla)) {
-      const columna = document.createElement("div");
-      columna.className = "year-column";
+    materias.forEach((anio, idx) => {
+      const col = document.createElement("div");
+      col.className = "year-column";
+
       const titulo = document.createElement("h2");
-      titulo.textContent = anio;
-      columna.appendChild(titulo);
+      titulo.textContent = `${idx + 1}° Año`;
+      col.appendChild(titulo);
 
-      cuatris.forEach((cuatri, index) => {
-        if (index > 0) {
-          const divisor = document.createElement("div");
-          divisor.className = "divisor-cuatrimestre";
-          columna.appendChild(divisor);
-        }
-        const bloque = document.createElement("div");
-        bloque.className = "cuatrimestre";
+      anio.forEach((cuatri, i) => {
+        if (i === 1) col.appendChild(document.createElement("div")).className = "divider";
+
         cuatri.forEach(nombre => {
-          const id = nombre.toLowerCase().replace(/[^a-z0-9]/g, "-");
-          const materia = document.createElement("div");
-          materia.className = "materia";
-          materia.id = id;
-          materia.textContent = nombre;
-          bloque.appendChild(materia);
+          const mat = document.createElement("div");
+          mat.className = "materia";
+          mat.textContent = nombre;
+          mat.onclick = () => {
+            mat.classList.toggle("estado-1");
+            if (!mat.classList.contains("estado-1")) {
+              mat.classList.remove("estado-2");
+            } else if (mat.classList.contains("estado-1") && !mat.classList.contains("estado-2")) {
+              mat.classList.add("estado-2");
+            }
+          };
+          col.appendChild(mat);
         });
-        columna.appendChild(bloque);
       });
 
-      contenedor.appendChild(columna);
-    }
-
-    function actualizarHabilitaciones() {}
-
-    document.querySelectorAll(".materia").forEach(m => {
-      m.addEventListener("click", () => {
-        if (m.classList.contains("estado-2")) {
-          m.classList.remove("estado-2");
-        } else if (m.classList.contains("estado-1")) {
-          m.classList.remove("estado-1");
-          m.classList.add("estado-2");
-        } else {
-          m.classList.add("estado-1");
-        }
-        actualizarHabilitaciones();
-      });
+      mallaDiv.appendChild(col);
     });
 
     async function guardarProgreso() {
-      const estadoMaterias = {};
-      document.querySelectorAll(".materia").forEach(m => {
-        if (m.classList.contains("estado-2")) estadoMaterias[m.id] = 2;
-        else if (m.classList.contains("estado-1")) estadoMaterias[m.id] = 1;
-        else estadoMaterias[m.id] = 0;
+      const estados = {};
+      document.querySelectorAll(".materia").forEach(el => {
+        estados[el.textContent] = el.className;
       });
-
-      await setDoc(docRef, estadoMaterias);
-      alert("Progreso guardado.");
+      await setDoc(doc(db, "progresos", "usuario1"), estados);
+      alert("Progreso guardado");
     }
 
     async function cargarProgreso() {
-      const docSnap = await getDoc(docRef);
+      const docSnap = await getDoc(doc(db, "progresos", "usuario1"));
       if (docSnap.exists()) {
-        const datos = docSnap.data();
-        Object.entries(datos).forEach(([id, estado]) => {
-          const m = document.getElementById(id);
-          if (!m) return;
-          m.classList.remove("estado-1", "estado-2");
-          if (estado === 1) m.classList.add("estado-1");
-          else if (estado === 2) m.classList.add("estado-2");
+        const estados = docSnap.data();
+        document.querySelectorAll(".materia").forEach(el => {
+          el.className = estados[el.textContent] || "materia";
         });
+      } else {
+        alert("No se encontró progreso guardado");
       }
-      actualizarHabilitaciones();
     }
-
-    document.getElementById("guardar").addEventListener("click", guardarProgreso);
-    document.getElementById("cargar").addEventListener("click", cargarProgreso);
-
-    cargarProgreso();
   </script>
 </body>
 </html>
