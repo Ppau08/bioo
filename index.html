@@ -44,7 +44,7 @@
 
     .cuatrimestre {
       padding: 10px;
-      min-height: 280px;
+      min-height: 240px;
       position: relative;
     }
 
@@ -59,7 +59,7 @@
       background-color: #FFFFFF;
       border: 2px solid #fff;
       border-radius: 8px;
-      margin: 8px 0;
+      margin: 6px 0;
       padding: 10px;
       text-align: center;
       font-size: 16px;
@@ -102,32 +102,13 @@
 <body>
   <h1>Malla Bioquímica Interactiva</h1>
 
-  <div class="container">
-    <div class="year-column">
-      <h2>1er Año</h2>
-
-      <div class="cuatrimestre">
-        <div class="materia" id="algebra">Álgebra</div>
-        <div class="materia" id="quimica-general">Química General</div>
-        <div class="materia" id="biologia">Biología</div>
-      </div>
-
-      <div class="divisor-cuatrimestre"></div>
-
-      <div class="cuatrimestre">
-        <div class="materia" id="quimica-inorganica">Química Inorgánica</div>
-        <div class="materia" id="calculo">Cálculo</div>
-        <div class="materia" id="mecanica">Mecánica</div>
-      </div>
-    </div>
-  </div>
+  <div class="container" id="malla"></div>
 
   <div class="buttons">
     <button id="guardar">Guardar Progreso</button>
     <button id="cargar">Cargar Progreso</button>
   </div>
 
-  <!-- FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -145,9 +126,60 @@
     const db = getFirestore(app);
     const docRef = doc(db, "usuarios", "progreso_estudiante");
 
-    function actualizarHabilitaciones() {
-      // Por ahora vacío, lo podés completar si querés lógica de correlativas
+    const malla = {
+      "1er Año": [
+        ["Álgebra y Geometría Analítica", "Biología General y Celular", "Química General"],
+        ["Cálculo", "Física (Mecánica, Calor y Termodinámica)", "Química Inorgánica"]
+      ],
+      "2do Año": [
+        ["Química Orgánica", "Química Biológica", "Estadística"],
+        ["Fisicoquímica", "Biología Molecular y Celular", "Microbiología"]
+      ],
+      "3er Año": [
+        ["Fisiología", "Química Analítica", "Patología"],
+        ["Farmacología", "Toxicología", "Inmunología"]
+      ],
+      "4to Año": [
+        ["Bioquímica Clínica I", "Hematología", "Virología"],
+        ["Bioquímica Clínica II", "Prácticas de Laboratorio", "Parasitología"]
+      ],
+      "5to Año": [
+        ["Trabajo Final", "Legislación Bioquímica", "Gestíon de Calidad"]
+      ]
+    };
+
+    const contenedor = document.getElementById("malla");
+
+    for (const [anio, cuatris] of Object.entries(malla)) {
+      const columna = document.createElement("div");
+      columna.className = "year-column";
+      const titulo = document.createElement("h2");
+      titulo.textContent = anio;
+      columna.appendChild(titulo);
+
+      cuatris.forEach((cuatri, index) => {
+        if (index > 0) {
+          const divisor = document.createElement("div");
+          divisor.className = "divisor-cuatrimestre";
+          columna.appendChild(divisor);
+        }
+        const bloque = document.createElement("div");
+        bloque.className = "cuatrimestre";
+        cuatri.forEach(nombre => {
+          const id = nombre.toLowerCase().replace(/[^a-z0-9]/g, "-");
+          const materia = document.createElement("div");
+          materia.className = "materia";
+          materia.id = id;
+          materia.textContent = nombre;
+          bloque.appendChild(materia);
+        });
+        columna.appendChild(bloque);
+      });
+
+      contenedor.appendChild(columna);
     }
+
+    function actualizarHabilitaciones() {}
 
     document.querySelectorAll(".materia").forEach(m => {
       m.addEventListener("click", () => {
@@ -193,7 +225,7 @@
     document.getElementById("guardar").addEventListener("click", guardarProgreso);
     document.getElementById("cargar").addEventListener("click", cargarProgreso);
 
-    cargarProgreso(); // auto cargar al abrir
+    cargarProgreso();
   </script>
 </body>
 </html>
