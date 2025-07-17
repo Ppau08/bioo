@@ -13,7 +13,7 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #1c0312;
-  padding: 0 40px; /* MÁS MARGEN EN LOS COSTADOS */
+  padding: 0 40px;
 }
 
 h1 {
@@ -25,17 +25,20 @@ h1 {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  justify-content: flex-start; /* alineado desde la izquierda */
-  gap: 20px; /* más separación entre columnas */
+  justify-content: flex-start;
+  gap: 20px;
 }
 
 .year-column {
   background-color: #E5C7D6;
-  border-radius: 20px; /* MÁS REDONDEADO */
+  border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  width: 260px; /* MÁS ANCHO */
+  width: 260px;
   flex-shrink: 0;
   padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .year-column h2 {
@@ -49,25 +52,34 @@ h1 {
   font-size: 20px;
 }
 
+/* Cada cuatrimestre tiene altura fija para alinear la línea divisoria */
 .cuatrimestre {
-  border-top: 3px solid #F7EEED;
-  padding: 15px 10px;
+  padding: 10px;
+  min-height: 300px; /* altura fija para alinear los separadores */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: none; /* sin fondo */
+  border: none;
+}
+
+/* Línea divisoria entre cuatrimestres */
+.year-column .cuatrimestre:first-of-type {
+  border-bottom: 3px solid #ffffffaa; /* línea clara divisoria */
 }
 
 .cuatrimestre h3 {
-  text-align: center;
-  margin: 10px 0;
-  font-size: 16px;
+  display: none; /* ocultar los títulos si no querés mostrar "1er cuatri", etc */
 }
 
 .materia {
   background-color: #FFFFFF;
   border: 2px solid #fff;
-  border-radius: 12px; /* MÁS REDONDEADO */
+  border-radius: 12px;
   margin: 10px 0;
   padding: 12px;
   text-align: center;
-  font-size: 15px; /* MÁS GRANDE */
+  font-size: 15px;
   cursor: pointer;
   transition: all 0.3s;
 }
